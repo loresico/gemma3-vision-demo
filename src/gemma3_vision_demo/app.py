@@ -144,8 +144,6 @@ class Gemma3VisionDemo:
             *Running locally on Apple Silicon using MLX optimization*
             
             ---
-            **Note**: This is a demo project built to gain hands-on experience with 
-            large multimodal models and modern ML deployment patterns.
             """)
             
             with gr.Row():
