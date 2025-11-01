@@ -5,7 +5,7 @@ Run with: pytest
 Run with coverage: pytest --cov=src
 """
 import pytest
-from src.main import greet
+from src.gemma3_vision_demo.main import greet
 
 
 class TestGreet:
@@ -42,7 +42,7 @@ class TestMain:
     
     def test_main_runs_without_error(self, capsys):
         """Test that main function runs without raising exceptions."""
-        from src.main import main
+        from src.gemma3_vision_demo.main import main
         
         main()
         
