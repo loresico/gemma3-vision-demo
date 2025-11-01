@@ -68,6 +68,66 @@ def _patched_prepare_inputs_for_multimodal(
 gemma3.Model.prepare_inputs_for_multimodal = _patched_prepare_inputs_for_multimodal
 
 
+def build_custom_theme(
+    base_theme: str = "default",
+    primary_color: str = "blue", 
+    secondary_color: str = "cyan",
+    neutral_color: str = "slate"
+) -> gr.Theme:
+    """
+    Build a custom Gradio theme with configurable colors.
+    
+    Args:
+        base_theme: Base theme to use ("soft", "default", "glass", "monochrome", "ocean")
+        primary_color: Primary color hue (e.g., "blue", "green", "red", "purple", "orange")
+        secondary_color: Secondary color hue
+        neutral_color: Neutral color hue (e.g., "slate", "gray", "zinc", "neutral", "stone")
+    
+    Returns:
+        Configured Gradio theme
+        
+    Examples:
+        >>> # Blue/cyan theme (default)
+        >>> theme = build_custom_theme()
+        
+        >>> # Purple/pink theme
+        >>> theme = build_custom_theme(primary_color="purple", secondary_color="pink")
+        
+        >>> # Green monochrome
+        >>> theme = build_custom_theme(base_theme="monochrome", primary_color="green")
+    """
+    # Select base theme
+    theme_map = {
+        "soft": gr.themes.Soft,
+        "default": gr.themes.Default,
+        "glass": gr.themes.Glass,
+        "monochrome": gr.themes.Monochrome,
+        "ocean": gr.themes.Ocean,
+    }
+    
+    base = theme_map.get(base_theme.lower(), gr.themes.Soft)
+    
+    # Create theme with custom colors
+    return base(
+        primary_hue=primary_color,
+        secondary_hue=secondary_color,
+        neutral_hue=neutral_color,
+    ).set(
+        # Button styling
+        button_primary_background_fill="*primary_500",
+        button_primary_background_fill_hover="*primary_600",
+        button_primary_text_color="white",
+        # Input styling
+        input_background_fill="*neutral_50",
+        input_border_color="*primary_200",
+        # Block styling  
+        block_background_fill="white",
+        block_label_background_fill="*primary_50",
+        block_label_text_color="*primary_700",
+        block_title_text_color="*primary_800",
+    )
+
+
 class Gemma3VisionDemo:
     """Gemma 3 multimodal Q&A application"""
     
@@ -129,7 +189,22 @@ class Gemma3VisionDemo:
     
     def create_interface(self) -> gr.Blocks:
         """Create Gradio interface"""
-        with gr.Blocks(theme=gr.themes.Default(), title="Gemma 3 Vision Demo") as demo:
+        # Build custom theme - change colors here to experiment!
+        # Try: primary_color="purple", secondary_color="pink"
+        # Or: base_theme="glass", primary_color="green"
+        custom_theme = build_custom_theme(
+            base_theme="default",
+            primary_color="orange",
+            secondary_color="cyan",
+            neutral_color="slate"
+        )
+        
+        with gr.Blocks(theme=custom_theme, title="Gemma 3 Vision Demo", css="""
+            .gradio-container {
+                max-width: 1200px !important;
+            }
+            footer {visibility: hidden}
+        """) as demo:
             gr.Markdown("""
             # Gemma 3 Vision Q&A Demo
             
@@ -157,7 +232,7 @@ class Gemma3VisionDemo:
                     submit_btn = gr.Button("Ask Gemma 3", variant="primary")
                 
                 with gr.Column():
-                    output = gr.Textbox(label="Answer", lines=12)
+                    output = gr.Markdown(label="Answer", value="*Waiting for your question...*")
             
             # Example questions
             gr.Examples(
