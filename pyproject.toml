@@ -1,24 +1,34 @@
 [project]
-name = "your-project-name"
+name = "gemma3-vision-demo"
 version = "0.1.0"
-description = "A brief description of your project"
+description = "Gemma 3 Vision Q&A Demo - Multimodal AI on Apple Silicon"
 readme = "README.md"
 requires-python = ">=3.13"
 license = {text = "MIT"}
 authors = [
     {name = "Lorenzo Siconolfi", email = "siconolfi.lorenzo@gmail.com"}
 ]
-
 dependencies = [
     "mlx-vlm>=0.0.13",
     "gradio>=4.0.0",
     "pillow>=10.0.0",
 ]
 
+[project.scripts]
+gemma3-demo = "src.gemma3_vision_demo.app:main"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["src.gemma3_vision_demo"]
+
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
     "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
     "black>=23.7.0",
 ]
 
