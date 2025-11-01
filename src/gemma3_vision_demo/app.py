@@ -129,7 +129,7 @@ class Gemma3VisionDemo:
     
     def create_interface(self) -> gr.Blocks:
         """Create Gradio interface"""
-        with gr.Blocks(theme=gr.themes.Soft(), title="Gemma 3 Vision Demo") as demo:
+        with gr.Blocks(theme=gr.themes.Default(), title="Gemma 3 Vision Demo") as demo:
             gr.Markdown("""
             # Gemma 3 Vision Q&A Demo
             
