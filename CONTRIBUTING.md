@@ -1,16 +1,17 @@
 # Contributing Guide
 
-Thank you for considering contributing to this project! This guide will help you understand our development process and standards.
+Thank you for considering contributing to Gemma 3 Vision Demo! This is a learning project exploring multimodal AI with Google DeepMind's Gemma 3 model on Apple Silicon. Your contributions help make this project a better learning resource for everyone.
 
 ## 📋 Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
-- [Commit Message Convention](#commit-message-convention)
-- [Pull Request Process](#pull-request-process)
 - [Development Setup](#development-setup)
 - [Testing](#testing)
+- [Commit Message Convention](#commit-message-convention)
+- [Pull Request Process](#pull-request-process)
 - [Code Style](#code-style)
+- [Theme Customization](#theme-customization)
 
 ## 🤝 Code of Conduct
 
@@ -25,11 +26,11 @@ Thank you for considering contributing to this project! This guide will help you
 
 ```bash
 # Fork on GitHub, then clone your fork
-git clone https://github.com/YOUR_USERNAME/python-uv-template.git
-cd python-uv-template
+git clone https://github.com/YOUR_USERNAME/gemma3-vision-demo.git
+cd gemma3-vision-demo
 
 # Add upstream remote
-git remote add upstream https://github.com/ORIGINAL_OWNER/python-uv-template.git
+git remote add upstream https://github.com/loresico/gemma3-vision-demo.git
 ```
 
 ### 2. Create a Branch
@@ -79,8 +80,10 @@ Must be one of:
 
 The scope should specify the place of the commit change:
 
-- `setup` - Changes to setup-portable.sh
-- `package` - Changes to package-portable.sh
+- `app` - Main application code
+- `theme` - UI/theme changes
+- `model` - Model loading and inference
+- `tests` - Test files
 - `deps` - Dependency updates
 - `docs` - Documentation
 - `config` - Configuration files
@@ -108,52 +111,50 @@ The scope should specify the place of the commit change:
 
 #### Simple Feature
 ```
-feat(setup): add Python 3.14 support
+feat(theme): add ocean theme variant
 ```
 
 #### Bug Fix with Details
 ```
-fix(package): correct tar.gz extraction path
+fix(model): handle attention_mask type conversion
 
-The extraction was failing on macOS because of incorrect
-strip-components value. Changed from 2 to 1.
+The mlx-vlm library expects mx.array but receives numpy array
+for attention_mask. Added conversion in the patch.
 
 Fixes #42
 ```
 
 #### Documentation Update
 ```
-docs(readme): update installation instructions
+docs(readme): update quick start instructions
 
-Added clarification about Python version compatibility
-and release date matching.
+Added information about gemma3-demo command and
+installation in development mode.
 ```
 
-#### Breaking Change
+#### Theme Change
 ```
-feat(setup): change default Python to 3.13
+feat(theme): add custom purple/pink color scheme
 
-BREAKING CHANGE: Default Python version changed from 3.12 to 3.13.
-Users need to run `./setup-portable.sh --force-clean` to upgrade.
-
-Closes #89
+Changed from default blue theme to purple/pink for
+better visual differentiation from other demos.
 ```
 
 #### Dependency Update
 ```
-chore(deps): upgrade uv to 0.5.0
+chore(deps): upgrade gradio to 5.49.1
 
-- Updated uv from 0.4.x to 0.5.0
-- Includes performance improvements
+- Updated gradio from 5.0.0 to 5.49.1
+- Includes new theme customization features
 - No breaking changes
 ```
 
-#### Refactoring
+#### Test Addition
 ```
-refactor(setup): improve error handling
+test(app): add integration tests for image processing
 
-Extracted error handling into separate functions
-for better readability and reusability.
+Added tests for image upload, processing pipeline,
+and error handling with mock models.
 ```
 
 ## 🔄 Pull Request Process
@@ -168,20 +169,20 @@ git rebase upstream/main
 ### 2. Run Tests and Checks
 
 ```bash
+# Activate virtual environment
+source .venv/bin/activate
+
 # Format code
 black src/ tests/
 
-# Check code style
-flake8 src/ tests/
+# Run tests with coverage
+pytest tests/ --cov=src --cov-report=term-missing -v
 
-# Type checking
-mypy src/
+# Run tests excluding slow/integration tests
+pytest tests/ -m "not slow and not integration"
 
-# Run tests
-pytest tests/ -v
-
-# Test the setup script
-./setup-portable.sh --force-clean
+# Test the application manually
+gemma3-demo
 ```
 
 ### 3. Push Your Changes
@@ -234,38 +235,56 @@ Closes #(issue number)
 
 ### Prerequisites
 
+- **Apple Silicon Mac** (M1/M2/M3) with 16GB+ RAM (required for MLX)
 - Python 3.13+
-- UV package manager
+- uv package manager
 - Git
 
 ### Setup Development Environment
 
 ```bash
-# Run setup
-./setup-portable.sh
+# Run setup script (downloads Python, installs uv and dependencies)
+./setup.sh
 
 # Activate virtual environment
 source .venv/bin/activate
 
+# Install package in development mode
+uv pip install -e .
+
 # Install dev dependencies
 uv pip install -e ".[dev]"
+
+# Verify installation
+gemma3-demo
 ```
 
 ### Project Structure
 
 ```
-.
-├── src/                    # Source code
+gemma3-vision-demo/
+├── .github/
+│   └── workflows/
+│       └── test.yml        # CI/CD test workflow
+├── src/
+│   └── gemma3_vision_demo/
+│       ├── __init__.py
+│       └── app.py          # Main application
+├── tests/
 │   ├── __init__.py
-│   └── main.py
-├── tests/                  # Test files
-│   ├── __init__.py
-│   └── test_main.py
-├── setup-portable.sh       # Setup script
-├── package-portable.sh     # Packaging script
-├── verify-python-version.sh # Verification script
+│   ├── conftest.py         # Pytest configuration
+│   ├── test_app.py         # Application tests
+│   └── README.md           # Test documentation
+├── demo/                   # Screenshots/videos
+├── setup.sh                # Setup script
+├── verify_python_version.sh # Python version check
 ├── pyproject.toml          # Project configuration
-└── README.md              # Documentation
+├── pytest.ini              # Pytest settings
+├── uv.lock                 # Locked dependencies
+├── README.md               # Main documentation
+├── CONTRIBUTING.md         # This file
+├── TECHNICAL_NOTES.md      # Technical documentation
+└── THEME_CUSTOMIZATION.md  # Theme guide
 ```
 
 ## 🧪 Testing
@@ -273,14 +292,20 @@ uv pip install -e ".[dev]"
 ### Running Tests
 
 ```bash
+# Activate environment
+source .venv/bin/activate
+
 # Run all tests
 pytest
 
 # Run with coverage
-pytest --cov=src --cov-report=html
+pytest --cov=src --cov-report=html --cov-report=term-missing
 
 # Run specific test file
-pytest tests/test_main.py
+pytest tests/test_app.py
+
+# Run excluding slow/integration tests (CI default)
+pytest tests/ -m "not slow and not integration"
 
 # Run with verbose output
 pytest -v
@@ -296,15 +321,40 @@ pytest -s
 - Name test functions `test_*`
 - Use descriptive names
 - Test edge cases
+- Mock external dependencies (models, APIs)
 - Add docstrings
+- Use test markers for categorization
 
 Example:
 ```python
-def test_greet_with_custom_name():
-    """Test greet function with a custom name."""
-    result = greet("Alice")
-    assert result == "Hello, Alice!"
+import pytest
+from unittest.mock import Mock, patch
+
+def test_analyze_image_success(app_instance, sample_image):
+    """Test image analysis with valid inputs."""
+    with patch('src.gemma3_vision_demo.app.generate') as mock_generate:
+        mock_generate.return_value = Mock(text="A beautiful landscape")
+        
+        result = app_instance.analyze_image(sample_image, "What do you see?")
+        
+        assert "beautiful landscape" in result.lower()
+        mock_generate.assert_called_once()
+
+@pytest.mark.slow
+def test_real_model_inference():
+    """Integration test with real model (slow)."""
+    # This test will be skipped in CI
+    pass
 ```
+
+### Test Markers
+
+Available markers in `pytest.ini`:
+- `slow` - Tests that take a long time (>5 seconds)
+- `integration` - Integration tests requiring real models
+- `unit` - Fast unit tests (default)
+
+See `tests/README.md` for comprehensive testing guide.
 
 ## 🎨 Code Style
 
@@ -312,27 +362,64 @@ def test_greet_with_custom_name():
 
 - Follow [PEP 8](https://peps.python.org/pep-0008/)
 - Use [Black](https://black.readthedocs.io/) for formatting (88 char line length)
-- Use [isort](https://pycqa.github.io/isort/) for import sorting
 - Use type hints where appropriate
-- Write docstrings for functions and classes
+- Write docstrings for functions and classes (Google style)
+- Keep functions focused and single-purpose
+- Add type annotations from `__future__ import annotations`
 
 ```python
-def greet(name: str) -> str:
+from __future__ import annotations
+
+import gradio as gr
+from PIL import Image
+
+
+def analyze_image(image: Image.Image, question: str) -> str:
     """
-    Return a greeting message.
+    Analyze an image and answer a question about it.
     
     Args:
-        name: The name to greet
+        image: PIL Image to analyze
+        question: Question to answer about the image
         
     Returns:
-        A greeting string
+        Answer text from the model
+        
+    Raises:
+        ValueError: If image is None or question is empty
     """
-    return f"Hello, {name}!"
+    if image is None:
+        raise ValueError("Image cannot be None")
+    if not question.strip():
+        raise ValueError("Question cannot be empty")
+    
+    # Process image and generate answer
+    return model.generate(image, question)
+```
+
+### Gradio UI Code
+
+- Use descriptive component labels
+- Add helpful placeholder text
+- Organize layout with `gr.Row()` and `gr.Column()`
+- Include example inputs with `gr.Examples()`
+- Use markdown for formatting instructions
+
+```python
+with gr.Blocks(theme=custom_theme) as demo:
+    gr.Markdown("# My Demo Title")
+    
+    with gr.Row():
+        with gr.Column():
+            input_image = gr.Image(type="pil", label="Upload Image")
+            submit_btn = gr.Button("Submit", variant="primary")
+        
+        with gr.Column():
+            output = gr.Markdown(label="Result")
 ```
 
 ### Bash Scripts
 
-- Use `shellcheck` for linting
 - Use `set -e` for error handling
 - Add comments for complex logic
 - Use meaningful variable names
@@ -343,18 +430,75 @@ def greet(name: str) -> str:
 set -e
 
 # Configuration
-PYTHON_VERSION="3.13.9"
+PYTHON_VERSION="3.13"
 
-echo "Setting up Python ${PYTHON_VERSION}"
+echo "Setting up Python ${PYTHON_VERSION}..."
 ```
 
 ### Documentation
 
 - Use Markdown for documentation
-- Include code examples
+- Include code examples with proper syntax highlighting
 - Keep it concise and clear
-- Update README when adding features
-- Add comments for complex code
+- Update README.md when adding user-facing features
+- Update TECHNICAL_NOTES.md for implementation details
+- Update THEME_CUSTOMIZATION.md for UI changes
+- Add inline comments for complex logic (especially MLX operations)
+- Document workarounds and patches thoroughly
+
+Example inline documentation:
+```python
+# WORKAROUND: mlx-vlm v0.3.5 expects mx.array but receives numpy array
+# Convert attention_mask to MLX array before processing
+if isinstance(attention_mask, np.ndarray):
+    attention_mask = mx.array(attention_mask)
+```
+
+## 🎨 Theme Customization
+
+### Changing the UI Theme
+
+The app uses a custom Gradio theme builder function. To customize:
+
+1. **Edit theme parameters** in `src/gemma3_vision_demo/app.py`:
+
+```python
+custom_theme = build_custom_theme(
+    base_theme="soft",        # Options: "soft", "default", "glass", "monochrome", "ocean"
+    primary_color="purple",   # Try: "blue", "green", "purple", "orange", "pink"
+    secondary_color="pink",   # Any valid color name
+    neutral_color="slate"     # Options: "slate", "gray", "zinc", "neutral", "stone"
+)
+```
+
+2. **Test your changes**:
+
+```bash
+source .venv/bin/activate
+gemma3-demo
+```
+
+3. **Popular theme combinations**:
+
+```python
+# Professional Blue (default)
+build_custom_theme(primary_color="blue", secondary_color="cyan")
+
+# Vibrant Purple
+build_custom_theme(primary_color="purple", secondary_color="pink")
+
+# Modern Green Glass
+build_custom_theme(base_theme="glass", primary_color="green")
+
+# Ocean Theme
+build_custom_theme(base_theme="ocean", primary_color="blue", secondary_color="teal")
+```
+
+4. **Document your theme**:
+   - Update `THEME_CUSTOMIZATION.md` if you add new theme presets
+   - Include screenshots in PRs that modify the theme
+
+See `THEME_CUSTOMIZATION.md` for comprehensive theme guide.
 
 ## 📦 Release Process
 
@@ -399,9 +543,12 @@ Steps to reproduce:
 What you expected to happen
 
 **Environment**
-- OS: [e.g., macOS 13.0, Ubuntu 22.04]
-- Python version: [e.g., 3.13.9]
-- Script output: [paste here]
+- OS: [e.g., macOS 14.0 Sonoma]
+- Mac Model: [e.g., MacBook Pro M2, 16GB RAM]
+- Python version: [e.g., 3.13]
+- Gradio version: [e.g., 5.49.1]
+- MLX-VLM version: [e.g., 0.3.5]
+- Error output: [paste here]
 
 **Additional context**
 Any other relevant information
@@ -427,14 +574,51 @@ Any other context or screenshots
 
 ## 📞 Questions?
 
-- Open a [Discussion](https://github.com/username/repo/discussions)
+- Open a [Discussion](https://github.com/loresico/gemma3-vision-demo/discussions)
 - Check the [README](README.md)
-- Review [existing issues](https://github.com/username/repo/issues)
+- Review [existing issues](https://github.com/loresico/gemma3-vision-demo/issues)
+- Read [TECHNICAL_NOTES.md](TECHNICAL_NOTES.md) for implementation details
+- Check [THEME_CUSTOMIZATION.md](THEME_CUSTOMIZATION.md) for UI customization
+
+## 🌟 Areas for Contribution
+
+We especially welcome contributions in these areas:
+
+### Features
+- **Streaming responses** - Implement real-time token streaming
+- **Batch processing** - Process multiple images at once
+- **History/session management** - Save conversation history
+- **Advanced prompting** - Pre-built prompt templates
+- **Export functionality** - Save results to file
+
+### Model Improvements
+- **Fine-tuning examples** - Domain-specific fine-tuning guides
+- **Model comparison** - Support for different Gemma variants (12B, 27B)
+- **Performance optimization** - Faster inference, lower memory usage
+
+### UI/UX
+- **Theme presets** - Additional color schemes
+- **Dark mode** - Proper dark theme support
+- **Responsive design** - Better mobile/tablet support
+- **Accessibility** - Screen reader support, keyboard navigation
+
+### Documentation
+- **Tutorials** - Step-by-step guides for common tasks
+- **Examples** - More example images and questions
+- **Architecture diagrams** - Visual documentation of the system
+- **Video demos** - Screen recordings of features
+
+### Testing
+- **Integration tests** - End-to-end testing with real models
+- **Performance benchmarks** - Track inference speed and memory usage
+- **UI tests** - Automated Gradio interface testing
 
 ## 🙏 Thank You!
 
-Your contributions make this project better for everyone!
+This is a learning project, and your contributions help make it a valuable resource for the ML/AI community. Whether you're fixing a typo, adding a feature, or just asking questions, you're helping improve this project for everyone!
 
 ---
 
 **Happy Contributing! 🎉**
+
+*Remember: This is a learning project - don't hesitate to ask questions or propose new ideas!*
