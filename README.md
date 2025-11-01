@@ -1,295 +1,112 @@
-# Python UV Template (Always Portable) 🚀
+# Gemma 3 Vision Q&A Demo
 
 [![Python 3.13](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/)
 [![UV](https://img.shields.io/badge/uv-enabled-blue)](https://github.com/astral-sh/uv)
 [![Portable](https://img.shields.io/badge/portable-100%25-green)](https://github.com/indygreg/python-build-standalone)
 
-A professional Python project template that **always uses portable Python** - never relies on system installations.
+**Learning Project**: Hands-on exploration of Google DeepMind's Gemma 3 multimodal model
 
-## ✨ Philosophy
+Built with modern Python tooling (uv) to demonstrate:
+- Large language model (LLM) deployment
+- Multimodal AI (vision + language)
+- MLX optimization for Apple Silicon
+- Modern Python package management
 
-- 🎯 **Always Portable** - Consistent Python environment everywhere
-- 📦 **Self-Contained** - No dependency on system Python
-- 🔄 **Reproducible** - Same exact Python version every time
-- 🚀 **Distributable** - Package includes everything needed
-
-## 🚀 Quick Start
-
+## Quick Start
 ```bash
-# 1. Clone or use this template
-git clone https://github.com/yourusername/your-project
-cd your-project
+# Clone repository
+git clone https://github.com/loresico/gemma3-vision-demo
+cd gemma3-vision-demo
 
-# 2. Run setup (downloads Python 3.13.9 first time, ~2 minutes)
+# Download python, install uv and then dependencies as in uv.lock
 ./setup.sh
 
-# 3. Activate and run
+# Activate the .venv
 source .venv/bin/activate
-python src/main.py
+
+# Run application
+# Using installed command (recommended)
+gemma3-demo
+
+# Using module directly
+python -m src.gemma3_vision_demo.app
 ```
 
-That's it! No system Python needed.
+## Demo
 
-## 📁 Project Structure (After Setup)
+[Screenshots or video here]
 
+## Technical Stack
+
+- **Model**: Gemma 3 4B (8-bit quantized)
+- **Framework**: MLX (Apple Silicon optimized)
+- **Package Manager**: uv (fast Python package installer)
+- **Interface**: Gradio
+- **Python**: 3.10+
+
+## Project Structure
 ```
-your-project/
+gemma3-vision-demo/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml            # CI/CD pipeline
-├── .python/                  # Portable Python 3.13.9 (~80MB, gitignored)
-├── .venv/                    # Virtual environment (gitignored)
+│       ├── ci.yml          # CI/CD pipeline
+│       └── test.yml        # Test workflow
 ├── src/
-│   ├── __init__.py
-│   └── main.py
+│   └── gemma3_vision_demo/
+│       ├── __init__.py
+│       └── app.py          # Main application
 ├── tests/
 │   ├── __init__.py
-│   └── test_main.py
-├── .gitignore
-├── CONTRIBUTING.md           # Contribution guidelines
-├── pyproject.toml            # Project configuration
-├── README.md
-├── QUICK_REFERENCE.md
-├── setup.sh         # Setup script
-├── uv.lock
-└── verify-python-version.sh  # Version checker
+│   ├── conftest.py         # Pytest configuration
+│   ├── test_app.py         # Application tests
+│   └── README.md           # Test documentation
+├── demo/                   # Screenshots/videos
+├── htmlcov/                # Coverage reports (generated)
+├── pyproject.toml          # Project configuration
+├── uv.lock                 # Locked dependencies
+├── pytest.ini              # Pytest settings
+├── setup.sh                # Setup script
+├── verify_python_version.sh # Python version check
+├── README.md               # This file
+├── CONTRIBUTING.md         # Contribution guidelines
+├── TECHNICAL_NOTES.md      # Technical documentation
+└── QUICK_REFERENCE.md      # Quick reference guide
 ```
 
-## 🎯 Common Commands
+## Known Issues
 
-```bash
-# Setup (first time downloads Python, subsequent runs reuse it)
-./setup.sh
+### mlx-vlm v0.3.5 Compatibility
+This project includes a workaround for a bug in mlx-vlm v0.3.5 where the Gemma3 model's attention_mask handling causes a TypeError. The fix is applied automatically via a runtime patch in `app.py`. This workaround can be removed once the upstream library is updated.
 
-# If something breaks, clean rebuild
-./setup.sh --force-clean
+## Limitations
 
-# Add a dependency
-# 1. Edit pyproject.toml
-# 2. Then:
-uv lock
-uv sync
+This is a learning/demo project with:
+- Local-only execution (no cloud deployment)
+- Requires Apple Silicon Mac with 16GB+ RAM
+- Model quantized to 8-bit for efficiency
+- Not optimized for production use
 
-```
+## Future Exploration
 
-## 🔧 How It Works
+- Fine-tune on domain-specific imagery (maps, satellite data)
+- Implement streaming responses
+- Add batch processing capabilities
+- Explore larger Gemma variants (12B, 27B)
+- Integration with mapping APIs
 
-### First Time
+## Acknowledgments
 
-1. Downloads pre-built Python 3.13.9 from [python-build-standalone](https://github.com/indygreg/python-build-standalone)
-2. Installs to `.python/` directory
-3. Creates virtual environment in `.venv/`
-4. Installs dependencies with UV
+- Google DeepMind for open-sourcing Gemma 3
+- MLX team for Apple Silicon optimization
+- Astral (uv developers) for modern Python tooling
 
-### Subsequent Runs
+## License
 
-1. Finds existing `.python/` installation
-2. Reuses it (no download needed!)
-3. Creates fresh `.venv/`
-4. Installs dependencies
-
-### With `--force-clean`
-
-1. Deletes `.python/`, `.venv/`, `uv.lock`
-2. Downloads Python 3.13.9 again
-3. Fresh installation
-
-## 💡 Why Portable Python?
-
-| System Python | Portable Python |
-|---------------|-----------------|
-| ❌ Different versions on different machines | ✅ Exact same version everywhere |
-| ❌ Might not be installed | ✅ Always available |
-| ❌ User might update it | ✅ Controlled version |
-| ❌ Dependency conflicts | ✅ Self-contained |
-| ❌ "Works on my machine" | ✅ Works everywhere |
-
-## 📊 Disk Space
-
-- `.python/` : ~80 MB (one-time)
-- `.venv/` : ~50 MB (varies by dependencies)
-- **Total**: ~150 MB uncompressed
-- **Package**: ~50 MB compressed
-
-Small price for complete portability!
-
-## 🛠️ Development Workflow
-
-```bash
-# Day 1: Setup
-./setup.sh
-source .venv/bin/activate
-
-# Daily development
-python src/main.py
-pytest
-
-# Add dependencies
-# Edit pyproject.toml, then:
-uv lock && uv sync
-
-# If weird issues
-./setup.sh --force-clean
-```
-
-## 📮 Distribution Workflow
-
-```bash
-# 1. Ensure clean build
-./setup.sh --force-clean
-
-# 2. Test your app
-source .venv/bin/activate
-python src/main.py
-```
-
-## 🎨 Customization
-
-### Change Python Version
-
-Edit `setup.sh`:
-```bash
-PYTHON_VERSION="3.14.*"  # Or any version
-```
-
-Available versions: https://github.com/indygreg/python-build-standalone/releases
-
-## 🐛 Troubleshooting
-
-```bash
-# Virtual environment issues
-rm -rf .venv/ && ./setup.sh
-
-# Complete fresh start
-./setup.sh --force-clean
-
-# Check what you have
-.python/bin/python3 --version
-source .venv/bin/activate && python --version
-```
-
-## 📚 Documentation
-
-- [Setup Guide](README.md) - Detailed guide
-- [Quick Reference](QUICK_REFERENCE.md) - Command cheat sheet
-- [UV Documentation](https://github.com/astral-sh/uv)
-
-## ⚠️ Platform Compatibility
-
-Portable Python is **OS and architecture specific**:
-
-- ✅ macOS x86_64 → macOS x86_64
-- ✅ macOS arm64 (M1/M2/M3) → macOS arm64
-- ✅ Linux x86_64 → Linux x86_64
-- ✅ Linux aarch64 → Linux aarch64
-- ❌ macOS → Linux (use Docker)
-- ❌ x86_64 → arm64 (use Docker)
-- ❌ Windows (use WSL or Docker)
-
-## 🤝 Contributing
-
-### Commit Message Convention
-
-This project follows [Conventional Commits](https://www.conventionalcommits.org/) for clear and structured commit history.
-
-**Format:**
-```
-<type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
-```
-
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting, no logic change)
-- `refactor`: Code refactoring (no feature change or bug fix)
-- `perf`: Performance improvements
-- `test`: Adding or updating tests
-- `chore`: Maintenance tasks (dependencies, config)
-- `ci`: CI/CD changes
-
-**Examples:**
-```bash
-feat(setup): add Python 3.14 support
-fix(package): correct tar.gz extraction path
-docs(readme): update installation instructions
-chore(deps): upgrade uv to latest version
-refactor(setup): improve error handling
-```
-
-**Scope (optional):** Component affected (setup, package, docs, etc.)
-
-### Pull Request Process
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Make your changes with conventional commits
-4. Run tests and linting (`pytest && black --check .`)
-5. Update documentation if needed
-6. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-7. Push to the branch (`git push origin feature/amazing-feature`)
-8. Open a Pull Request with:
-   - Clear description of changes
-   - Link to related issues
-   - Screenshots/examples if applicable
-
-### Code Standards
-
-- **Python Code:** Follow PEP 8, use Black formatter
-- **Bash Scripts:** Use ShellCheck for validation
-- **Documentation:** Clear, concise, with examples
-- **Tests:** Add tests for new features
-
-### Before Submitting
-
-```bash
-# Format code
-black src/ tests/
-
-# Run linting
-flake8 src/ tests/
-
-# Run tests
-pytest tests/
-
-# Verify script works
-./setup.sh --force-clean
-```
-
-### Set Up Commit Message Template (Optional)
-
-```bash
-# Use the included commit message template
-git config commit.template .gitmessage
-
-# Now when you commit, you'll see helpful hints
-git commit
-```
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
-## 📄 License
-
-MIT License - See [LICENSE](LICENSE) file
-
-## 🙏 Acknowledgments
-
-- [python-build-standalone](https://github.com/indygreg/python-build-standalone) - Pre-built Python distributions
-- [UV](https://github.com/astral-sh/uv) - Fast Python package installer
-- Built with modern Python best practices
-
-## 📧 Support
-
-- 📖 [Documentation](SETUP_GUIDE.md)
-- 🐛 [Issues](https://github.com/yourusername/python-uv-template/issues)
-- 💬 [Discussions](https://github.com/yourusername/python-uv-template/discussions)
+MIT - Demo/learning project
 
 ---
 
-⭐ If you find this template helpful, please star it!
-
-**Ready to use?** Click "Use this template" above or clone and start building!
+**Part of my active learning in ML/AI:**
+- [Computer Vision: Image Super-Resolution](https://huggingface.co/spaces/loresico/gradio-super-resolution)
+- [ML: Coffee Compass Predictor](https://huggingface.co/spaces/loresico/coffee-compass)
+- [Python Templates with uv/Poetry](https://github.com/loresico/template-python-uv)
