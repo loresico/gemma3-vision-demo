@@ -18,11 +18,14 @@ Built with modern Python tooling (uv) to demonstrate:
 git clone https://github.com/loresico/gemma3-vision-demo
 cd gemma3-vision-demo
 
-# Install dependencies (requires uv)
-uv sync
+# Download python, install uv and then dependencies as in uv.lock
+./setup.sh
+
+# Activate the .venv
+source .venv/bin/activate
 
 # Run application
-uv run gemma3-demo
+python -m src.gemma3_vision_demo.app
 ```
 
 ## Demo
@@ -49,15 +52,10 @@ gemma3-vision-demo/
 └── demo/                   # Screenshots/videos
 ```
 
-## What I Learned
+## Known Issues
 
-Building this project provided hands-on experience with:
-1. Google DeepMind's open-source multimodal models
-2. Vision-language model (VLM) architectures
-3. MLX framework for efficient Apple Silicon inference
-4. Modern Python packaging with uv
-5. Building user interfaces for ML applications
-6. Understanding GenAI deployment tradeoffs
+### mlx-vlm v0.3.5 Compatibility
+This project includes a workaround for a bug in mlx-vlm v0.3.5 where the Gemma3 model's attention_mask handling causes a TypeError. The fix is applied automatically via a runtime patch in `app.py`. This workaround can be removed once the upstream library is updated.
 
 ## Limitations
 
@@ -87,7 +85,7 @@ MIT - Demo/learning project
 
 ---
 
-**Part of my portfolio demonstrating active learning in ML/AI:**
+**Part of my active learning in ML/AI:**
 - [Computer Vision: Image Super-Resolution](https://huggingface.co/spaces/loresico/gradio-super-resolution)
 - [ML: Coffee Compass Predictor](https://huggingface.co/spaces/loresico/coffee-compass)
 - [Python Templates with uv/Poetry](https://github.com/loresico/template-python-uv)
