@@ -4,19 +4,19 @@ Thank you for considering contributing to Gemma 3 Vision Demo! This is a learnin
 
 ## 📋 Table of Contents
 
-- [Getting Started](#🚀-getting-started)
-- [Commit Message Convention](#📝-Commit-Message-Convention)
-- [Pull Request Process](#🔄-pull-request-process)
-- [Development Setup](#🛠️-development-setup)
+- [Getting Started](#getting-started)
+- [Commit Message Convention](#Commit-Message-Convention)
+- [Pull Request Process](#pull-request-process)
+- [Development Setup](#development-setup)
 - [Testing](#testing)
-- [Code Style](#🎨-code-style)
-- [Theme Customization](#🎨-theme-customization)
-- [Release Process](#📦-release-process)
-- [Reporting Bugs](#🐛-reporting-bugs)
-- [Feature Requests](#💡-feature-requests)
-- [Areas for Contribution](#🌟-areas-for-contribution)
+- [Code Style](#code-style)
+- [Theme Customization](#theme-customization)
+- [Release Process](#release-process)
+- [Reporting Bugs](#reporting-bugs)
+- [Feature Requests](#feature-requests)
+- [Areas for Contribution](#areas-for-contribution)
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Fork and Clone
 
