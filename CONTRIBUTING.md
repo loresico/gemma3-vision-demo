@@ -4,21 +4,17 @@ Thank you for considering contributing to Gemma 3 Vision Demo! This is a learnin
 
 ## 📋 Table of Contents
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Setup](#development-setup)
+- [Getting Started](#🚀-getting-started)
+- [Commit Message Convention](#📝-Commit-Message-Convention)
+- [Pull Request Process](#🔄-pull-request-process)
+- [Development Setup](#🛠️-development-setup)
 - [Testing](#testing)
-- [Commit Message Convention](#commit-message-convention)
-- [Pull Request Process](#pull-request-process)
-- [Code Style](#code-style)
-- [Theme Customization](#theme-customization)
-
-## 🤝 Code of Conduct
-
-- Be respectful and inclusive
-- Welcome newcomers and help them learn
-- Focus on constructive feedback
-- Assume good intentions
+- [Code Style](#🎨-code-style)
+- [Theme Customization](#🎨-theme-customization)
+- [Release Process](#📦-release-process)
+- [Reporting Bugs](#🐛-reporting-bugs)
+- [Feature Requests](#💡-feature-requests)
+- [Areas for Contribution](#🌟-areas-for-contribution)
 
 ## 🚀 Getting Started
 
@@ -571,14 +567,6 @@ Other solutions you've thought about
 **Additional context**
 Any other context or screenshots
 ```
-
-## 📞 Questions?
-
-- Open a [Discussion](https://github.com/loresico/gemma3-vision-demo/discussions)
-- Check the [README](README.md)
-- Review [existing issues](https://github.com/loresico/gemma3-vision-demo/issues)
-- Read [TECHNICAL_NOTES.md](TECHNICAL_NOTES.md) for implementation details
-- Check [THEME_CUSTOMIZATION.md](THEME_CUSTOMIZATION.md) for UI customization
 
 ## 🌟 Areas for Contribution
 
