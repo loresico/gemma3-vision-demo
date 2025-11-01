@@ -25,6 +25,10 @@ cd gemma3-vision-demo
 source .venv/bin/activate
 
 # Run application
+# Using installed command (recommended)
+gemma3-demo
+
+# Using module directly
 python -m src.gemma3_vision_demo.app
 ```
 
@@ -43,13 +47,30 @@ python -m src.gemma3_vision_demo.app
 ## Project Structure
 ```
 gemma3-vision-demo/
-├── pyproject.toml          # Project configuration
-├── uv.lock                 # Locked dependencies
+├── .github/
+│   └── workflows/
+│       ├── ci.yml          # CI/CD pipeline
+│       └── test.yml        # Test workflow
 ├── src/
 │   └── gemma3_vision_demo/
 │       ├── __init__.py
 │       └── app.py          # Main application
-└── demo/                   # Screenshots/videos
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py         # Pytest configuration
+│   ├── test_app.py         # Application tests
+│   └── README.md           # Test documentation
+├── demo/                   # Screenshots/videos
+├── htmlcov/                # Coverage reports (generated)
+├── pyproject.toml          # Project configuration
+├── uv.lock                 # Locked dependencies
+├── pytest.ini              # Pytest settings
+├── setup.sh                # Setup script
+├── verify_python_version.sh # Python version check
+├── README.md               # This file
+├── CONTRIBUTING.md         # Contribution guidelines
+├── TECHNICAL_NOTES.md      # Technical documentation
+└── QUICK_REFERENCE.md      # Quick reference guide
 ```
 
 ## Known Issues
