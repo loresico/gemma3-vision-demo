@@ -43,7 +43,7 @@ git checkout -b fix/bug-description
 
 Follow the project structure and coding standards (see below).
 
-## 📝 Commit Message Convention
+## Commit Message Convention
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/) specification.
 
@@ -153,7 +153,7 @@ Added tests for image upload, processing pipeline,
 and error handling with mock models.
 ```
 
-## 🔄 Pull Request Process
+## Pull Request Process
 
 ### 1. Sync with Upstream
 
@@ -227,7 +227,7 @@ Closes #(issue number)
 - Make requested changes in new commits
 - Don't force-push after review has started
 
-## 🛠️ Development Setup
+## Development Setup
 
 ### Prerequisites
 
@@ -283,7 +283,7 @@ gemma3-vision-demo/
 └── THEME_CUSTOMIZATION.md  # Theme guide
 ```
 
-## 🧪 Testing
+## Testing
 
 ### Running Tests
 
@@ -352,7 +352,7 @@ Available markers in `pytest.ini`:
 
 See `tests/README.md` for comprehensive testing guide.
 
-## 🎨 Code Style
+## Code Style
 
 ### Python
 
@@ -450,7 +450,7 @@ if isinstance(attention_mask, np.ndarray):
     attention_mask = mx.array(attention_mask)
 ```
 
-## 🎨 Theme Customization
+## Theme Customization
 
 ### Changing the UI Theme
 
@@ -496,7 +496,7 @@ build_custom_theme(base_theme="ocean", primary_color="blue", secondary_color="te
 
 See `THEME_CUSTOMIZATION.md` for comprehensive theme guide.
 
-## 📦 Release Process
+## Release Process
 
 (For Maintainers)
 
@@ -568,7 +568,7 @@ Other solutions you've thought about
 Any other context or screenshots
 ```
 
-## 🌟 Areas for Contribution
+## Areas for Contribution
 
 We especially welcome contributions in these areas:
 
@@ -601,9 +601,7 @@ We especially welcome contributions in these areas:
 - **Performance benchmarks** - Track inference speed and memory usage
 - **UI tests** - Automated Gradio interface testing
 
-## 🙏 Thank You!
-
-This is a learning project, and your contributions help make it a valuable resource for the ML/AI community. Whether you're fixing a typo, adding a feature, or just asking questions, you're helping improve this project for everyone!
+## Thank You!
 
 ---
 
